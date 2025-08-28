@@ -47,6 +47,9 @@ body {
     cursor: pointer;
 }
 
+.nav-bar > button:hover {
+    box-shadow: 0 0 10px white;
+}
 
 .game {
     grid-column: 1/2;
@@ -87,34 +90,52 @@ body {
     display: flex;
     flex-direction: column;
     padding: 15px 30px;
-    /* justify-content: center;*/
+    /* justify-content: center; */
     align-items: center;
-    gap: 20px;
+    gap: 40px;
 }
 
 .setting > h4 {
-    font-size: 30px;
-    margin: 20px 0px;
+    font-size: 50px;
+    margin: 40px 0px;
+    color:rgb(172, 9, 88);
 }
 
 .setting > button {
-    height: 40px;
-    width: 150px;
-    border-radius: 20px;
+    height: 80px;
+    width: 210px;
+    border-radius: 30px;
     background-color: rgb(172, 9, 88);
     color: white;
     border: solid 3px rgb(127, 6, 64);
-    font-size: 18px;
+    font-size: 26px;
     font-weight: 550;
     cursor: pointer;
+}
+
+.setting > button:hover {
+    box-shadow: 0 0 10px rgb(172, 9, 88);
 }
 
 .setting > button:active {
     transform: scale(.98);
 }
 
+.setting > .input > input {
+    height: 35px;
+    width: 400px;
+    border-radius: 20px;
+}
+
+.setting > .input > label {
+    font-size: 26px;
+    font-weight: bold;
+    color:rgb(172, 9, 88);
+    margin-right: 10px;
+}
+
 .setting > .input + .input {
-    margin-bottom: 10px;
+    margin-bottom: 40px;
 }
 
 .footer {
