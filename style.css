@@ -1,3 +1,128 @@
-h1 {
-    color: red;
+body {
+    height: 100%;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-template-rows: 1fr 4fr 80px;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.nav-bar {
+    grid-column: 1/3;
+    grid-row: 1/2;
+    display: flex;
+    align-items: center;
+    background-color: rgb(172, 9, 88);
+    box-shadow: 0 3px 10px rgb(129, 128, 128);
+}
+
+.title > h1 {
+    font-size: 50px;
+}
+
+.title > h3 {
+    font-size: 26px;
+    margin-left: 20px;
+}
+
+.nav-bar > .title {
+    margin-left: 100px;
+    color: white;
+}
+
+.nav-bar > button {
+    margin-left: auto;
+    height: 70px;
+    width: 150px;
+    font-size: 26px;
+    margin-right: 200px;
+    border-radius: 15px;
+    color:rgb(172, 9, 88);
+    background-color: white;
+    border: rgb(172, 9, 88);
+    cursor: pointer;
+}
+
+
+.game {
+    grid-column: 1/2;
+    grid-row: 2/3;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.game > p {
+    font-size: 50px;
+    font-weight: bold;
+    color: rgb(172, 9, 88);
+}
+
+.cell {
+    border: 5px solid rgb(172, 9, 88);
+    height: 150px;
+    width:150px;
+    background-color: rgb(244, 223, 218);
+    cursor: pointer;
+}
+
+.cell:hover {
+    box-shadow: 0 0 20px rgb(172, 9, 88);
+}
+
+.cell:active {
+    transform: scale(.98);
+}
+
+
+.setting {
+    grid-column: 2/3;
+    grid-row: 2/3;
+    background-color: rgb(244, 223, 218);
+    box-shadow: -3px 0 10px rgb(166, 166, 166);
+    display: flex;
+    flex-direction: column;
+    padding: 15px 30px;
+    /* justify-content: center;*/
+    align-items: center;
+    gap: 20px;
+}
+
+.setting > h4 {
+    font-size: 30px;
+    margin: 20px 0px;
+}
+
+.setting > button {
+    height: 40px;
+    width: 150px;
+    border-radius: 20px;
+    background-color: rgb(172, 9, 88);
+    color: white;
+    border: solid 3px rgb(127, 6, 64);
+    font-size: 18px;
+    font-weight: 550;
+    cursor: pointer;
+}
+
+.setting > button:active {
+    transform: scale(.98);
+}
+
+.setting > .input + .input {
+    margin-bottom: 10px;
+}
+
+.footer {
+    grid-column: 1/3;
+    grid-row: 3/4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(172, 9, 88);
+    color: white;
 }

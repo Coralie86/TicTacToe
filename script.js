@@ -28,7 +28,11 @@ function createUser(name, mark_type) {
         return score;
     }
 
-    return {name, score, nthplayer, getRoundNumber, play, increaseScore, getScore}
+    function resetRoundNumber () {
+        round_nb = 0;
+    }
+
+    return {name, score, nthplayer, getRoundNumber, play, increaseScore, getScore, resetRoundNumber }
 
 }
 
@@ -47,6 +51,12 @@ function play_round() {
         winning_combination();
         console.log(gameboard_arr);
     }
+
+    function resetRound() {
+        player1.resetRoundNumber();
+        player2.resetRoundNumber();
+        gameboard_arr = ['', '', '', '', '', '', '', '', ''];
+    }
     
     function winning_combination() {
         if ((gameboard_arr[0] == gameboard_arr[1] && gameboard_arr[0] == gameboard_arr[2] && gameboard_arr[0] != '')
@@ -58,13 +68,21 @@ function play_round() {
             || (gameboard_arr[0] == gameboard_arr[4] && gameboard_arr[0] == gameboard_arr[8] && gameboard_arr[0] != '')    
             || (gameboard_arr[2] == gameboard_arr[4] && gameboard_arr[2] == gameboard_arr[6] && gameboard_arr[2] != '')){
                 round_finished = true;
-                console.log("Round Finished!")
+                if (player1.getRoundNumber() > player2.getRoundNumber()) {
+                    player1.increaseScore();
+                    console.log(`Round Finished! ${player1.name} wins!! Score is ${player1.getScore()} for ${player1.name} to ${player2.getScore()} for ${player2.name}.`)
+                }else {
+                    player2.increaseScore();
+                    console.log(`Round Finished! ${player2.name} wins!! Score is ${player1.getScore()} for ${player1.name} to ${player2.getScore()} for ${player2.name}.`)
+                }
+                resetRound();               
         } else {
             if (gameboard_arr.includes('')){
             console.log("Next Player")
         } else {
             console.log("it was a tie.")
             round_finished = true;
+            resetRound();
         }}
         return round_finished;
     }
@@ -75,16 +93,42 @@ function play_round() {
     return { getRoundFinished, winning_combination}
 }
 
-// add the incressing score for the user
+
 // Create a GameBoard Object to handle the render
+
+const board = document.querySelector('.game');
+const textStart = document.createElement("p");
+textStart.textContent = "Click on Start Game!";
+board.appendChild(textStart);
+
+const startGame_btn = document.querySelector('#start');
+startGame_btn.addEventListener('click', function() {
+    for (let i = 1; i<4; i++){
+        const row = document.createElement("div");
+        for (let u = 1; u<4; u++){
+            const cell = document.createElement("div");
+            cell.id = `${i}-${u}`;
+            cell.textContent = '';
+            cell.classList.add("cell")
+            row.appendChild(cell);
+        }
+        board.appendChild(row);
+    }
+    board.removeChild(textStart);
+})
+
+
 
 
 
 // Global
-const player1 = createUser("Bidule", "O");
-const player2 = createUser("Truc", "X");
+// const player1 = createUser("Bidule", "O");
+// const player2 = createUser("Truc", "X");
 
-play_round();
+// play_round();
+// play_round();
+
+
 
 
 
