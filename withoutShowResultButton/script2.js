@@ -11,18 +11,18 @@ function createUser(name, mark_type) {
     if (mark_type == 'X') {
         nthplayer = "player1";
     }
-    let round_nb = 0;
+    let turn_nb = 0;
     function play(row,ele) {
         if (gameboard_arr[row][ele] == ''){
             gameboard_arr[row][ele] = mark_type;
-            round_nb ++;
+            turn_nb ++;
         } else {
             console.log('Already chosen. Play another cell.')
         }
     }
 
-    function getRoundNumber () {
-        return round_nb;
+    function getTurnNumber () {
+        return turn_nb;
     }
 
     function increaseScore () {
@@ -33,17 +33,18 @@ function createUser(name, mark_type) {
         return score;
     }
 
-    function resetRoundNumber () {
-        round_nb = 0;
+    function resetTurnNumber () {
+        turn_nb = 0;
     }
 
-    return {name, score, nthplayer, getRoundNumber, play, increaseScore, getScore, resetRoundNumber }
+    return {name, score, nthplayer, getTurnNumber, play, increaseScore, getScore, resetTurnNumber }
 
 }
 
 // Create Game Object handling a round
 function play_round(player1, player2) {
     let round_finished = false;
+    let round_nb = 1;
     let player = player1;
 
     function updateAr(row, ele) {
@@ -59,10 +60,9 @@ function play_round(player1, player2) {
     }
 
     function resetRound() {
-        player1.resetRoundNumber();
-        player2.resetRoundNumber();
+        player1.resetTurnNumber();
+        player2.resetTurnNumber();
         gameboard_arr = [['', '', ''], ['', '', ''], ['', '', '']];
-        player = player1;
         round_finished = false;
     }
     
@@ -76,7 +76,7 @@ function play_round(player1, player2) {
     (gameboard_arr[0][0] == gameboard_arr[1][1] && gameboard_arr[0][0] == gameboard_arr[2][2] && gameboard_arr[0][0] != '') ||
     (gameboard_arr[0][2] == gameboard_arr[1][1] && gameboard_arr[0][2] == gameboard_arr[2][0] && gameboard_arr[0][2] != '')){
                 round_finished = true;
-                if (player1.getRoundNumber() > player2.getRoundNumber()) {
+                if (player1.getTurnNumber() > player2.getTurnNumber()) {
                     player1.increaseScore();                    
                     console.log(`Round Finished! ${player1.name} wins!! Score is ${player1.getScore()} for ${player1.name} to ${player2.getScore()} for ${player2.name}.`)
                 }else {
@@ -96,11 +96,18 @@ function play_round(player1, player2) {
             else {
             console.log("it was a tie.")
             round_finished = true;
-            // resetRound();
             }
             
         }
         return round_finished;
+    }
+
+    function increaseRound(){
+        round_nb ++;
+    }
+
+    function getRoundNb(){
+        return round_nb;
     }
 
     function getRoundFinished() {
@@ -114,7 +121,7 @@ function play_round(player1, player2) {
     function getAllPlayers(){
         return [player1, player2]
     }
-    return { player, getRoundFinished, winning_combination, updateAr, resetRound, getPlayer, getAllPlayers}
+    return { player, getRoundFinished, winning_combination, updateAr, resetRound, getPlayer, getAllPlayers, increaseRound, getRoundNb}
 }
 
 
@@ -128,8 +135,7 @@ function gameBoard() {
     const startGame_btn = document.querySelector('#start');
     const resetAll_btn = document.querySelector('#resetAll');
     const reset_Grid = document.querySelector('#reset');
-    const show_result_btn = document.querySelector('#show_result');
-    show_result_btn.setAttribute("clicked", false);
+    let in_game = false;
 
     function resetGrid() {
         if (board.contains(document.querySelector("#grid"))) {
@@ -142,6 +148,8 @@ function gameBoard() {
         );
         }
         game_object.resetRound();
+        game_object.increaseRound();
+        document.querySelector('#round_nb').textContent = `Round ${game_object.getRoundNb()}`;
         updatePrompt();
     }
 
@@ -160,10 +168,11 @@ function gameBoard() {
             board.removeChild(document.querySelector("#show_result"));
             board.classList.remove("game_result");
             document.querySelector("#prompt_grid").classList.remove("prompt_grid_result");
-            document.querySelector("#show_result").classList.remove("show_result");
+            // document.querySelector("#show_result").classList.remove("show_result");
         }
         input1.value = '';
         input2.value = '';
+        in_game = false;
     }
     
     function createGrid() {
@@ -231,10 +240,13 @@ function gameBoard() {
     }
 
     function createResults(player1, player2) {
+        const round_nb = document.createElement("div")
+        round_nb.id = "round_nb";
+        round_nb.textContent = `Round ${game_object.getRoundNb()}`;
         const show_result = document.createElement("div");
         show_result.id ="show_result";
         const result_title = document.createElement("h1");
-        result_title.textContent = "Results";
+        result_title.textContent = "Results :";
         const score_div = document.createElement("div");
         score_div.classList.add("score_div");
         const playerScore1 = document.createElement("p");
@@ -247,10 +259,11 @@ function gameBoard() {
         score_div.appendChild(playerScore1);
         score_div.appendChild(playerScore2);
 
+        show_result.appendChild(round_nb);
         show_result.appendChild(result_title);
         show_result.appendChild(score_div);
-
-        board.appendChild(show_result);
+       
+        board.appendChild(show_result);     
     }
 
     function updateResult(player1,player2){
@@ -262,6 +275,7 @@ function gameBoard() {
 
      // event to create the grid
     startGame_btn.addEventListener('click', function() {
+        if (in_game == false) {
         const player1_name = input1.value;
         const player2_name = input2.value;
         const player1 = createUser(player1_name, 'X');
@@ -269,8 +283,14 @@ function gameBoard() {
 
         game_object = play_round(player1, player2);
         displayPrompt();
-        createGrid();        
-    })
+        createResults(player1, player2);
+        createGrid();    
+        board.classList.add("game_result");
+        document.querySelector("#prompt_grid").classList.add("prompt_grid_result");
+        document.querySelector("#show_result").classList.add("show_result");
+        in_game = true;
+        }   
+})
 
      // Event to reset the all Game
     reset_Grid.addEventListener('click', function() {
@@ -279,26 +299,11 @@ function gameBoard() {
 
     // Event to reset the all Game
     resetAll_btn.addEventListener('click', function() {
+        resetGrid();
         resetAllGame();
     })
 
-    show_result_btn.addEventListener('click', function(){
-        if(!board.contains(document.querySelector("#show_result"))){
-            player1 = game_object.getAllPlayers()[0];
-            player2 = game_object.getAllPlayers()[1];
-            createResults(player1, player2);
-            board.classList.add("game_result");
-            document.querySelector("#prompt_grid").classList.add("prompt_grid_result");
-            document.querySelector("#show_result").classList.add("show_result");
-        } else {
-            board.removeChild(document.querySelector("#show_result"));
-            board.classList.remove("game_result");
-            document.querySelector("#prompt_grid").classList.remove("prompt_grid_result");
-            document.querySelector("#show_result").classList.remove("show_result");
-        }
-    })
-
-    return {resetAllGame, createGrid, updatePrompt}
+        return {resetAllGame, createGrid, updatePrompt}
 }
 
 
