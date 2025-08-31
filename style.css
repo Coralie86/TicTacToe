@@ -21,12 +21,14 @@ body {
 }
 
 .title > h1 {
-    font-size: 50px;
+    font-size: 70px;
+    margin: 20px 0px;
 }
 
 .title > h3 {
-    font-size: 26px;
-    margin-left: 20px;
+    font-size: 36px;
+    margin-left: 60px;
+    margin-bottom: 20px;
 }
 
 .nav-bar > .title {
@@ -36,11 +38,11 @@ body {
 
 .nav-bar > button {
     margin-left: auto;
-    height: 70px;
-    width: 150px;
-    font-size: 26px;
-    margin-right: 200px;
-    border-radius: 15px;
+    height: 90px;
+    width: 190px;
+    font-size: 40px;
+    margin-right: 400px;
+    border-radius: 20px;
     color:rgb(172, 9, 88);
     background-color: white;
     border: rgb(172, 9, 88);
@@ -48,10 +50,49 @@ body {
 }
 
 .nav-bar > button:hover {
-    box-shadow: 0 0 10px white;
+    box-shadow: 0 0 20px white;
 }
 
-.game {
+.game, #prompt_grid {
+    display:flex; 
+    flex-direction: column;
+    margin-top: 30px;
+    justify-content: start;
+    align-items: center;
+}
+
+.game_result {
+    display: grid;
+    grid-template-columns: minmax(auto, 1200px) minmax(auto, 550px);
+    align-items: flex-start;
+    margin-top: 30px;
+}
+
+
+.prompt_grid_result {
+    grid-column:  1/2;
+    justify-content: right;
+}
+
+.show_result {
+    grid-column:  2/3;
+    margin: 80px 50px 80px 0;
+    background-color:beige;
+    transform: translate(0, 140px)
+}
+
+#show_result > h1 {
+    text-align: center;
+    font-size: 46px;
+}
+
+.score_div > p {
+    text-align: center;
+    font-size: 28px;
+}
+
+
+#grid {
     grid-column: 1/2;
     grid-row: 2/3;
     display:flex;
@@ -59,7 +100,7 @@ body {
     align-items: center;
 }
 
-.game > p {
+.game > p, #prompt {
     font-size: 50px;
     font-weight: bold;
     color: rgb(172, 9, 88);
@@ -67,10 +108,22 @@ body {
 
 .cell {
     border: 5px solid rgb(172, 9, 88);
-    height: 150px;
-    width:150px;
+    height: 200px;
+    width:200px;
     background-color: rgb(244, 223, 218);
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 80px;
+}
+
+.X-color {
+    color: rgb(5, 91, 46);
+}
+
+.O-color {
+    color: rgb(5, 222, 117);
 }
 
 .cell:hover {
@@ -121,10 +174,20 @@ body {
     transform: scale(.98);
 }
 
-.setting > .input > input {
+input {
     height: 35px;
     width: 400px;
-    border-radius: 20px;
+    border-radius: 15px;
+    font-size: 24px;
+    padding: 0px 10px;
+}
+
+input:hover {
+    box-shadow: 0 0 20px rgb(172, 9, 88);
+}
+
+input:focus {
+    outline: rgb(127, 6, 64) solid 1px;
 }
 
 .setting > .input > label {
@@ -146,4 +209,5 @@ body {
     align-items: center;
     background-color: rgb(172, 9, 88);
     color: white;
+    font-size: 20px;
 }
